@@ -65,23 +65,42 @@ namespace NaveEspacial
 
             }
         }
-        public void Teclado(ref Point distancia,int velocidad)
+        public void Teclado(ref Point distancia, int velocidad)
         {
-           ConsoleKeyInfo tecla = Console.ReadKey(true);
+            ConsoleKeyInfo tecla = Console.ReadKey(true);
             if (tecla.Key == ConsoleKey.W)
-                distancia = new Point(0,-1);
+                distancia = new Point(0, -1);
             if (tecla.Key == ConsoleKey.S)
-                distancia = new Point(0,1);
+                distancia = new Point(0, 1);
             if (tecla.Key == ConsoleKey.D)
-                distancia = new Point(1,0);
+                distancia = new Point(1, 0);
             if (tecla.Key == ConsoleKey.A)
-                distancia = new Point(-1,0);
+                distancia = new Point(-1, 0);
+
+
 
             distancia.X *= velocidad;
             distancia.Y *= velocidad;
-            Posicion = new Point(Posicion.X+distancia.X,Posicion.Y+distancia.Y);
-
         }
+        public void Colisiones(Point distancia)
+        {
+
+           Point posicionAux = new Point(Posicion.X + distancia.X, Posicion.Y + distancia.Y);
+            if (posicionAux.X <= VentanaC.LimiteSuperior.X)
+                posicionAux.X = VentanaC.LimiteSuperior.X + 1;
+            if (posicionAux.X + 6 >= VentanaC.LimiteInferior.X)
+                posicionAux.X = VentanaC.LimiteInferior.X - 7;
+            if (posicionAux.Y <= VentanaC.LimiteSuperior.Y)
+                posicionAux.Y = VentanaC.LimiteSuperior.Y + 1;
+            if (posicionAux.Y + 2 >= VentanaC.LimiteInferior.Y)
+                posicionAux.Y = VentanaC.LimiteInferior.Y - 3;
+
+            Posicion=posicionAux;
+
+
+    }
+                
+  
         public void  Mover(int velocidad)
         {
             if (Console.KeyAvailable)
@@ -89,7 +108,7 @@ namespace NaveEspacial
                 Borrar();
                 Point distancia = new Point();
                 Teclado(ref distancia,velocidad);
-
+                Colisiones(distancia);
                 Dibujar();
             }
         }
